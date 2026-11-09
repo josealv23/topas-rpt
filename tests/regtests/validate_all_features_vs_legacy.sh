@@ -15,6 +15,7 @@ set -euo pipefail
 # - invitro_bind Manual model contract (split kept every step, ModeParams keys, washout).
 # - Decay timing (Bi-212 against Bateman) and one position per decay with the chain off.
 # - Decay-chain bookkeeping independent of thread count and CorrectByNumberOfHistories.
+# - Output files: default abundance file, full-precision times and read-back, uptake id check.
 # - Activity-map smoke run (optional; SKIP without required DICOM env).
 
 if [[ $# -ne 1 ]]; then
@@ -112,6 +113,9 @@ run_step "decay timing against Bateman; one position per decay" \
 
 run_step "decay-chain bookkeeping: thread count and CorrectByNumberOfHistories" \
   "${ROOT}/tests/regtests/validate_multithread_chain_bookkeeping.sh" "${TOPAS_BIN}"
+
+run_step "output files: default abundance file, read-back, uptake ids" \
+  "${ROOT}/tests/regtests/validate_output_files.sh" "${TOPAS_BIN}"
 
 run_optional_step "activity_map mode contract (optional)" \
   "${ROOT}/tests/regtests/validate_activity_map_contract.sh" "${TOPAS_BIN}"
